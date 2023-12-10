@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image-Slider</title>
+    <style>
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        background-color: rgb(47, 47, 47);
+      }
+      .imageslider {
+        box-shadow: rgba(255, 255, 255, 0.53) 0px 3px 8px;
+        width: 60%;
+        height: 80%;
+        margin: auto auto;
+        background-color: white;
+        padding: 20px;
+      }
+      .images {
+        width: 100%;
+        height: 80%;
+
+        /* display: flex; */
+        overflow: hidden;
+        /* justify-content: center; */
+        gap: 5px;
+        position: relative;
+      }
+      .img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+        transition: 1s;
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-around;
+        width: 70%;
+        margin: auto;
+        margin-top: 5%;
+      }
+      button {
+        border: 1px solid black;
+        padding: 20px 30px;
+        background-color: rgb(0, 0, 0);
+        color: white;
+        border-radius: 0px;
+        box-shadow: rgba(0, 0, 0, 0.47) 0px 1px 4px;
+      }
+      button:hover {
+        background-color: rgb(108, 108, 108);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="imageslider">
+      <div class="images">
+        <img src="https://picsum.photos/id/237/200/300" alt="" class="img" />
+        <img src="https://picsum.photos/id/238/200/300" alt="" class="img" />
+        <img src="https://picsum.photos/id/239/200/300" alt="" class="img" />
+        <img src="https://picsum.photos/id/236/200/300" alt="" class="img" />
+        <img src="https://picsum.photos/id/235/200/300" alt="" class="img" />
+      </div>
+      <div class="buttons">
+        <button onclick="left()">Left</button>
+        <button onclick="animation()">Start/Stop</button>
+        <button onclick="Right()">Right</button>
+      </div>
+    </div>
+    <script>
+      let slides = document.querySelectorAll(".img");
+      let counter = 0;
+      let totalSlides = slides.length - 1;
+      let animationid = null;
+      let animationstatus = false;
+      slides.forEach((slides, index) => {
+        slides.style.left = `${index * 100}%`;
+      });
+
+      const sliding = () => {
+        slides.forEach((slides) => {
+          slides.style.transform = `translateX(-${100 * counter}%)`;
+        });
+      };
+
+      function Right() {
+        counter++;
+        stopanimation();
+        animationstatus = false;
+        if (counter > totalSlides) {
+          counter = 0;
+        }
+        sliding();
+      }
+      function left() {
+        counter--;
+        stopanimation();
+        animationstatus = false;
+        if (counter < 0) {
+          counter = 0;
+        }
+
+        sliding();
+      }
+      function startanimation() {
+        animationstatus = true;
+        animationid = setInterval(
+          () => {
+            counter++;
+            if (counter > totalSlides) {
+              counter = 0;
+            }
+            sliding();
+          },
+
+          2000
+        );
+      }
+      function stopanimation() {
+        clearInterval(animationid);
+      }
+      function animation() {
+        if (animationstatus) {
+          stopanimation();
+          animationstatus = false;
+        } else {
+          startanimation();
+          animationstatus = true;
+        }
+      }
+    </script>
+  </body>
+</html>
